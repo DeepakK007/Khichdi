@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width : 100%;
+        }
+        table{
+            width:50vw;
+        }
+        tr:nth-child(even){
+            background-color: lightgray;
+        }
+        table,th,td{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        td,th{
+            padding:10px;
+            text-align: left;
+            width:33.33%;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="table">
+        <table>
+                <tr>
+                    <th>Booking No</th>
+                    <th>Total Amount</th>
+                    <th>Paid</th>
+                    <th>Unpaid</th>
+                </tr>
+        <tr>
+                <td><%=all_key_list.get(i)%></td>
+                <td><%=data.get('inc')%></td>
+                <td><%=data.get('dec')%></td>
+                <td><%=left_amount%></td>
+                </tr>
+                <tr>
+                    <td><%=all_key_list.get(i)%></td>
+                    <td><%=data.get('inc')%></td>
+                    <td><%=data.get('dec')%></td>
+                    <td><%=left_amount%></td>
+                    </tr>
+        </table>
+            </div>
+</body>
+</html>

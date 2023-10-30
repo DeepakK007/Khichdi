@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body{
+        background-color: rgba(230, 230, 230, 0.404);
+        font-family: Leto;
+      }
+      .container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap:10px;
+        width:100vw;
+      }
+      h2{
+        padding-left: 10px;
+        margin-right: 5px;
+      }
+      .list-items{
+        display:flex;
+        flex-direction:column;
+        width: 25vw;
+      }
+      .child-container{
+        display: flex;
+        flex-direction:column;
+        height:auto;
+        background-color: white;
+        margin-top:10px;
+        padding: 15px;
+        box-shadow: 4px 3px 4px lightgrey;
+      }
+      .name-status-photo{
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content: space-between;
+      }
+      .name-status{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 10px;
+      }
+      .photo-class{
+        height:70%;
+      }
+      .photo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:100px;
+        height:100px;
+      }
+    </style>
+    <script src="https://js.zohostatic.com/creator/widgets/version/1.0/widgetsdk-min.js"></script>
+  </head>
+  <body>
+    <div class="main-container">
+        
+    </div>
+    
+    <script>
+      
+      let machines = [];
+      let machine_type = [];
+        let main = document.querySelector('.main-container');
+        let container = document.createElement('div');
+        container.setAttribute('class','container');
+      ZOHO.CREATOR.init()
+        .then(function(data) {
+          //Code goes here
+          config_machines = {
+                    appName : "it-asset-tracker-1",
+                    reportName : "All_New_Machines",
+                    criteria: "ID!=0"
+                }
+          config_machine_type = {
+                    appName : "it-asset-tracker-1",
+                    reportName : "All_Machine_Types",
+                    criteria: "ID!=0"
+          }
+            ZOHO.CREATOR.API.getAllRecords(config_machine_type).then(function(response){
+            machine_type= response.data;
+            return ZOHO.CREATOR.API.getAllRecords(config_machines);
+            }).then(function(response){
+                    machines = response.data;
+                    console.log(machines);
+            }).then(()=>{
+                for(let i=0;i<machine_type.length;i++){
+                  let subContainer = document.createElement('div');
+                  subContainer.setAttribute('class','sub-container')
+                  let containerH2 = document.createElement('h2');
+                  subContainer.appendChild(containerH2);
+                  containerH2.innerHTML = `Machine Type: ${machine_type[i].Machine_Type}`
+                  let List_items = document.createElement('div');
+                  List_items.setAttribute('class','list-items')
+                  machines.forEach((machine)=>{
+                    
+                    if(machine.Type_field.display_value == machine_type[i].Machine_Type){
+                      let childContainer = document.createElement('div');
+                      childContainer.setAttribute('class','child-container');
+                      childContainer.innerHTML = `
+                            <div class="name-status-photo">
+                              <div class="name-status">
+                                  <div class="name">Name : ${machine.Name}</div>
+                                  <div class="status">Status : ${machine.Status}</div>
+                              </div>
+                              <div class="photo">
+                                <img class='photo-class' src='#' alt=${machine.Name}>
+                                </div>
+                            </div>
+                            <div class="active-date">Active Service Date : ${machine.Active_Service_Date}</div>
+                    `;
+                    let imageTag = childContainer.querySelector('.photo-class');
+                    imageTag.setAttribute('src','#');
+                    ZOHO.CREATOR.UTIL.setImageData(imageTag,machine.Machine_Photo);
+                    List_items.appendChild(childContainer);
+                    }
+                    
+                  })
+                  
+                  subContainer.appendChild(List_items);
+                  container.appendChild(subContainer);
+                  main.appendChild(container);
+                }
+            });
+            
+            //;
+        }).catch((data)=>console.log("Error : "+data));
+        
+        
+
+    </script>
+  </body>
+</html>
